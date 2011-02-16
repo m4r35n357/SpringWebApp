@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+    
+    <bean id="rssRemotingBase" abstract="true">
+		<property name="service" ref="rssServiceProxy" />
+		<property name="serviceInterface" value="uk.me.doitto.mypackage.rss.service.RSSWebServiceIf" />
+    </bean>
+    
+	<bean id="remotingHessianRss" name="/RSSWebService-hessian" parent="rssRemotingBase" class="org.springframework.remoting.caucho.HessianServiceExporter" />
+			
+	<bean id="remotingBurlapRss" name="/RSSWebService-burlap" parent="rssRemotingBase" class="org.springframework.remoting.caucho.BurlapServiceExporter" />
+			
+	<bean id="remotingHttpInvokerRss" name="/RSSWebService-http-invoker" parent="rssRemotingBase" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter" />
+			
+</beans>
+

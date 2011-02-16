@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="authBase" abstract="true">
+		<property name="username">
+			<value>${username}</value>
+		</property>
+		<property name="password">
+			<value>${password}</value>
+		</property>
+	</bean>
+	
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>WEB-INF/src/uk/me/doitto/mypackage/client/client.properties</value>
+		</property>
+	</bean>
+
+	<bean id="requestExecutor" class="org.springframework.remoting.httpinvoker.CommonsHttpInvokerRequestExecutor">
+		<property name="httpClient">
+			<bean parent="authBase" class="uk.me.doitto.mypackage.client.HttpClientFactoryBean" />
+		</property>
+	</bean>
+	
+	<bean id="xxxxWebServiceHttpInvokerProxy" class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+		<property name="serviceUrl">
+			<value>http://${serverName}:${httpPort}${contextPath}/remoting/XXXXWebService-http-invoker</value>
+		</property>
+		<property name="serviceInterface">
+			<value>uk.me.doitto.mypackage.xxxx.service.XXXXWebServiceIf</value>
+		</property>
+		<property name="httpInvokerRequestExecutor">
+			<ref local="requestExecutor"/>
+		</property>
+	</bean>
+
+	<bean id="xxxxWebServiceHessianProxy" parent="authBase" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+		<property name="serviceUrl">
+			<value>http://${serverName}:${httpPort}${contextPath}/remoting/XXXXWebService-hessian</value>
+		</property>
+		<property name="serviceInterface">
+			<value>uk.me.doitto.mypackage.xxxx.service.XXXXWebServiceIf</value>
+		</property>
+	</bean>
+
+	<bean id="xxxxWebServiceBurlapProxy" parent="authBase" class="org.springframework.remoting.caucho.BurlapProxyFactoryBean">
+		<property name="serviceUrl">
+			<value>http://${serverName}:${httpPort}${contextPath}/remoting/XXXXWebService-burlap</value>
+		</property>
+		<property name="serviceInterface">
+			<value>uk.me.doitto.mypackage.xxxx.service.XXXXWebServiceIf</value>
+		</property>
+	</bean>
+
+	<bean id="xxxxWebServiceJaxRpcProxy" parent="authBase" class="org.springframework.remoting.jaxrpc.JaxRpcPortProxyFactoryBean">
+		<property name="serviceFactoryClass">
+			<value>org.apache.axis.client.ServiceFactory</value>
+		</property>
+		<property name="wsdlDocumentUrl">
+		<value>http://${serverName}:${httpPort}${contextPath}/axis/XXXXWebService?wsdl</value>
+			</property>
+		<property name="namespaceUri">
+			<value>http://${serverName}:${httpPort}${contextPath}/axis/XXXXWebService</value>
+		</property>
+		<property name="serviceName">
+			<value>JaxRpcXXXXWebServiceService</value>
+		</property>
+		<property name="portName">
+			<value>XXXXWebService</value>
+		</property>
+		<property name="serviceInterface">
+			<value>uk.me.doitto.mypackage.xxxx.service.XXXXWebServiceIf</value>
+		</property>
+	</bean>
+
+	<bean id="musicManagerWebServiceHttpInvokerProxy" class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+		<property name="serviceUrl">
+			<value>http://${serverName}:${httpPort}${contextPath}/remoting/MusicManagerWebService-http-invoker</value>
+		</property>
+		<property name="serviceInterface">
+			<value>uk.me.doitto.mypackage.mm.service.MusicManagerWebServiceIf</value>
+		</property>
+		<property name="httpInvokerRequestExecutor">
+			<ref local="requestExecutor"/>
+		</property>
+	</bean>
+
+	<bean id="musicManagerWebServiceJaxRpcProxy" parent="authBase" class="org.springframework.remoting.jaxrpc.JaxRpcPortProxyFactoryBean">
+		<property name="serviceFactoryClass">
+			<value>org.apache.axis.client.ServiceFactory</value>
+		</property>
+		<property name="wsdlDocumentUrl">
+		<value>http://${serverName}:${httpPort}${contextPath}/axis/MusicManagerWebService?wsdl</value>
+			</property>
+		<property name="namespaceUri">
+			<value>http://${serverName}:${httpPort}${contextPath}/axis/MusicManagerWebService</value>
+		</property>
+		<property name="serviceName">
+			<value>JaxRpcMusicManagerWebServiceService</value>
+		</property>
+		<property name="portName">
+			<value>MusicManagerWebService</value>
+		</property>
+		<property name="serviceInterface">
+			<value>uk.me.doitto.mypackage.mm.service.MusicManagerWebServiceIf</value>
+		</property>
+<!--		<property name="servicePostProcessors">-->
+<!--			<list>-->
+<!--				<bean class="me.doitto.music.client.BeanMappingServicePostProcessor"/>-->
+<!--			</list>-->
+<!--		</property>-->
+	</bean>
+	
+	<!-- Aspect Configuration -->
+	<bean id="profilingInterceptor" class="uk.me.doitto.mypackage.aspect.ProfilingInterceptor" />
+	
+	<bean id="profilingProxy" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames" value="*Proxy"/>
+		<property name="interceptorNames">
+			<list>
+				<value>profilingInterceptor</value>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

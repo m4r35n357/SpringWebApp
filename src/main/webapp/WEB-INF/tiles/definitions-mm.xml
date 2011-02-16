@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+	<definition name="listAlbumsView" extends="baseLayout">
+		<put-attribute type="string" name="title" value="List Albums" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/mm/listAlbumsView.jsp" />
+	</definition>
+	
+	<definition name="listTracksView" extends="baseLayout">
+		<put-attribute type="string" name="title" value="List Tracks" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/mm/listTracksView.jsp" />
+	</definition>
+	
+	<definition name="listArtistsView" extends="baseLayout">
+		<put-attribute type="string" name="title" value="List Artists" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/mm/listArtistsView.jsp" />
+	</definition>
+	
+	<definition name="albumView" extends="baseLayout">
+		<put-attribute type="string" name="title" value="Album View" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/mm/albumView.jsp" />
+	</definition>
+	
+	<definition name="trackView" extends="baseLayout">
+		<put-attribute type="string" name="title" value="Track View" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/mm/trackView.jsp" />
+	</definition>
+	
+	<definition name="artistView" extends="baseLayout">
+		<put-attribute type="string" name="title" value="Artist View" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/mm/artistView.jsp" />
+	</definition>
+	
+	<definition name="playMedia" extends="baseLayout">
+		<put-attribute type="string" name="title" value="Play Media" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/mm/playMedia.jsp" />
+	</definition>	
+</tiles-definitions>

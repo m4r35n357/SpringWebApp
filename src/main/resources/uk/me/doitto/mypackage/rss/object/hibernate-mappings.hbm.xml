@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>    
+    <joined-subclass name="uk.me.doitto.mypackage.rss.object.AggregatedFeed" extends="uk.me.doitto.mypackage.object.Ownable" table="AGGREGATEDFEED">
+    	<key column="ID" />
+        <set name="feeds" table="AGGREGATE_FEED">
+            <key column="AGGREGATEID" />
+            <many-to-many column="FEEDID" class="uk.me.doitto.mypackage.rss.object.CachedRssFeed" />
+        </set>
+    </joined-subclass>
+    
+    <joined-subclass name="uk.me.doitto.mypackage.rss.object.CachedRssFeed" extends="uk.me.doitto.mypackage.object.PersistentClass" table="CACHEDRSSFEED">
+    	<key column="ID" />
+        <property name="url" />
+        <property name="feedData" type="text" />
+        <property name="lastFetch" type="timestamp" />
+        <set name="aggregates" table="AGGREGATE_FEED" inverse="true">
+            <key column="FEEDID" />
+            <many-to-many column="AGGREGATEID" class="uk.me.doitto.mypackage.rss.object.AggregatedFeed" />
+        </set>
+    </joined-subclass>    
+</hibernate-mapping>

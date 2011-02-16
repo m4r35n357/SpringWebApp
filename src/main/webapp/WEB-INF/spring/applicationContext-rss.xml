@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- Used by MVC and Remoting -->
+	<bean id="rssServiceProxy" parent="proxyBase">
+		<property name="target">
+			<bean class="uk.me.doitto.mypackage.rss.service.RSSService">
+				<property name="ownerService" ref="ownerServiceProxy" />
+				<property name="aggregatedFeedDAO">
+					<bean parent="genericHibernateDao">
+						<constructor-arg value="uk.me.doitto.mypackage.rss.object.AggregatedFeed" />
+					</bean>
+				</property>
+				<property name="cachedRssFeedDAO">
+					<bean parent="genericHibernateDao">
+						<constructor-arg value="uk.me.doitto.mypackage.rss.object.CachedRssFeed" />
+					</bean>
+				</property>
+				<property name="cacheExpiryTime" value="${rss.cacheexpirytime}" />
+				<property name="feedType" value="${rss.feedtype}" />
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- Timed tasks -->
+	<bean id="rssTimedTasks" class="org.springframework.scheduling.timer.TimerFactoryBean">
+		<property name="scheduledTimerTasks">
+			<list>
+				<bean class="org.springframework.scheduling.timer.ScheduledTimerTask">
+					<property name="delay" value="60000" />
+					<property name="period" value="1800000" />
+					<property name="timerTask">
+						<bean class="org.springframework.scheduling.timer.MethodInvokingTimerTaskFactoryBean">
+							<property name="targetObject" ref="rssServiceProxy" />
+							<property name="targetMethod" value="updateCache" />
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

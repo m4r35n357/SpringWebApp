@@ -1,0 +1,25 @@
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN" "http://getahead.org/dwr//dwr20.dtd">
+
+<dwr>
+	<allow>
+		<create creator="spring" javascript="JMusicManager" scope="application">
+			<param name="beanName" value="musicManagerServiceProxy" />
+		</create>
+
+		<create creator="spring" javascript="JRss" scope="application">
+			<param name="beanName" value="rssServiceProxy" />
+		</create>
+		
+		<create creator="spring" javascript="JResource" scope="application">
+			<param name="beanName" value="resourceServiceProxy" />
+		</create>
+		
+		<create creator="spring" javascript="JTest" scope="application">
+			<param name="beanName" value="testWebService" />
+		</create>
+		
+		<create creator="new" javascript="JClock" scope="application">
+			<param name="class" value="uk.me.doitto.mypackage.clock.service.DwrGlobalClock" />
+		</create>
+	</allow>
+</dwr>

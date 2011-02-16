@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>  
+    <class name="uk.me.doitto.mypackage.object.PersistentClass" table="PERSISTENTCLASS">
+        <id name="id">
+            <generator class="uuid" />
+        </id>
+        <property name="name" />
+    </class>
+    
+    <joined-subclass name="uk.me.doitto.mypackage.object.Ownable" extends="uk.me.doitto.mypackage.object.PersistentClass" table="OWNABLE">
+    	<key column="ID" />
+        <property name="ownerId" />
+    </joined-subclass>   
+</hibernate-mapping>

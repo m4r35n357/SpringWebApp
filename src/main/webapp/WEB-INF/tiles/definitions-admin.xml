@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+	<definition name="ownerAdminView" extends="baseLayout">
+		<put-attribute type="string" name="title" value="User Admin" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/admin/ownerAdmin.jsp" />
+	</definition>
+	
+	<definition name="ownerEditView" extends="baseLayout">
+		<put-attribute type="string" name="title" value="Edit User" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/admin/ownerEdit.jsp" />
+	</definition>
+	
+	<definition name="resourceAdminView" extends="baseLayout">
+		<put-attribute type="string" name="title" value="Resource Admin" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/admin/resourceAdmin.jsp" />
+	</definition>
+	
+	<definition name="resourceEditView" extends="baseLayout">
+		<put-attribute type="string" name="title" value="Edit Resource" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/admin/resourceEdit.jsp" />
+	</definition>
+</tiles-definitions>

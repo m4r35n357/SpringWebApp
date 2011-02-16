@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.5"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns="http://java.sun.com/xml/ns/javaee"
+		xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+		xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	
+	<display-name>Spring Technology Demonstrator</display-name>
+
+<!--	<distributable />-->
+	
+	<!-- Spring entry point -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/spring/applicationContext*.xml</param-value>
+    </context-param>
+    
+	<!-- Spring MVC servlet -->
+	<servlet>
+		<servlet-name>mvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/mvc-servlet*.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>mvc</servlet-name>
+		<url-pattern>/mvc/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- Spring Remoting servlet -->
+	<servlet>
+		<servlet-name>remoting</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/remoting-servlet*.xml</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>remoting</servlet-name>
+		<url-pattern>/remoting/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Apache AXIS servlet -->
+	<servlet>
+		<servlet-name>axis</servlet-name>
+		<servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class>
+		<load-on-startup>3</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>axis</servlet-name>
+		<url-pattern>/axis/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- JAX-WS servlets -->
+<!--    <servlet>-->
+<!--        <display-name>JAX-WS Servlet</display-name>-->
+<!--        <servlet-name>JaxWsTESTWebServiceServlet</servlet-name>-->
+<!--        <servlet-class>uk.me.doitto.mypackage.service.JaxWsTESTWebService</servlet-class>-->
+<!--        <load-on-startup>3</load-on-startup>-->
+<!--    </servlet>-->
+<!---->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>JaxWsTESTWebServiceServlet</servlet-name>-->
+<!--        <url-pattern>/ws</url-pattern>-->
+<!--    </servlet-mapping>-->
+	
+	<!-- DWR (AJAX) servlet -->
+	<servlet>
+		<servlet-name>dwr-invoker</servlet-name>
+<!--		<servlet-class>org.directwebremoting.spring.DwrSpringServlet</servlet-class>-->
+		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+		<init-param>
+			<param-name>config-location</param-name>
+			<param-value>WEB-INF/dwr/dwr.xml</param-value>
+		</init-param>		
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	    <init-param>
+	      <param-name>activeReverseAjaxEnabled</param-name>
+	      <param-value>true</param-value>
+	    </init-param>
+	    <!-- DWR Early Closing Mode (needed for mod_jk) -->
+		<init-param>
+		  <param-name>maxWaitAfterWrite</param-name>
+		  <param-value>500</param-value>
+		</init-param>
+		<load-on-startup>4</load-on-startup>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>dwr-invoker</servlet-name>
+		<url-pattern>/dwr/*</url-pattern>
+	</servlet-mapping>
+
+    <!-- Spring Security Filters -->
+    <filter>
+        <filter-name>Spring Security Filter Chain Proxy</filter-name>
+        <filter-class>org.springframework.security.util.FilterToBeanProxy</filter-class>
+        <init-param>
+            <param-name>targetClass</param-name>
+            <param-value>org.springframework.security.util.FilterChainProxy</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+		<filter-name>Spring Security Filter Chain Proxy</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+    </filter-mapping>   
+
+<!--	<filter>-->
+<!--	  <filter-name>springSecurityFilterChain</filter-name>-->
+<!--	  <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>-->
+<!--	</filter>	  -->
+<!--	<filter-mapping>-->
+<!--	  <filter-name>springSecurityFilterChain</filter-name>-->
+<!--	  <url-pattern>/*</url-pattern>-->
+<!--	</filter-mapping>-->
+	
+	<filter>
+		<filter-name>Spring Security Channel Processing Filter</filter-name>
+		<filter-class>org.springframework.security.util.FilterToBeanProxy</filter-class>
+		<init-param>
+			<param-name>targetClass</param-name>
+			<param-value>org.springframework.security.securechannel.ChannelProcessingFilter</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>Spring Security Channel Processing Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+    <!-- Open [Session/EntityManager] In View Filter -->
+	<filter>
+		<filter-name>OpenInView</filter-name>
+		<filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+		<init-param>
+			<param-name>sessionFactoryBeanName</param-name>
+			<param-value>hibernateSessionFactory</param-value>
+		</init-param>
+		<init-param>
+			<param-name>singleSession</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>	
+	<filter-mapping>
+		<filter-name>OpenInView</filter-name>
+		<url-pattern>/mvc/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>OpenInView</filter-name>
+		<url-pattern>/remoting/*</url-pattern>
+	</filter-mapping>	
+	<filter-mapping>
+		<filter-name>OpenInView</filter-name>
+		<url-pattern>/axis/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>OpenInView</filter-name>
+		<url-pattern>/dwr/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- Various -->
+	<session-config>
+		<session-timeout>10</session-timeout>
+	</session-config>
+
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	
+	<jsp-config>
+		<jsp-property-group>
+			<url-pattern>*.jsp</url-pattern>
+			<el-ignored>false</el-ignored>
+			<scripting-invalid>true</scripting-invalid>
+			<trim-directive-whitespaces>true</trim-directive-whitespaces>
+		</jsp-property-group>
+	</jsp-config>
+	
+	<error-page>
+		<error-code>404</error-code>
+		<location>/mvc/notfound</location>
+	</error-page>
+</web-app>

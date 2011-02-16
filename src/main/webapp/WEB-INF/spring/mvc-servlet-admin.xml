@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- Users -->
+	<bean id="ownerBase" abstract="true">
+		<property name="ownerService" ref="ownerServiceProxy" />
+	</bean>
+	
+	<bean id="mvcEditOwners" name="/editowners" parent="ownerBase" class="uk.me.doitto.mypackage.admin.controller.UserController">
+		<property name="actionType" value="editOwners" />
+	</bean>	
+	
+	<bean id="mvcRemoveOwner" name="/removeowner" parent="ownerBase" class="uk.me.doitto.mypackage.admin.controller.UserController">
+		<property name="actionType" value="removeOwner" />
+	</bean>	
+	
+	<bean id="mvcToggleOwnerEnabled" name="/toggleownerenabled" parent="ownerBase" class="uk.me.doitto.mypackage.admin.controller.UserController">
+		<property name="actionType" value="toggleEnabled" />
+	</bean>	
+	
+	<bean id="ownerValidator" class="uk.me.doitto.mypackage.admin.object.OwnerValidator" />
+	
+	<bean id="alterOwnerBase" abstract="true" parent="ownerBase">
+		<property name="formView" value="ownerEditView" />
+		<property name="successView" value="redirect:editowners" />
+		<property name="validator" ref="ownerValidator" />
+	</bean>
+	
+	<bean id="mvcAddOwner" name="/addowner" parent="alterOwnerBase" class="uk.me.doitto.mypackage.admin.controller.AddAccountFormController">
+		<property name="commandClass" value="uk.me.doitto.mypackage.admin.object.Owner" />
+	</bean>	
+	
+	<bean id="mvcEditOwner" name="/editowner" parent="alterOwnerBase" class="uk.me.doitto.mypackage.admin.controller.EditAccountFormController" />	
+	
+	<!-- Resources -->
+	<bean id="resourceBase" abstract="true">
+		<property name="resourceService" ref="resourceServiceProxy" />
+	</bean>
+	
+	<bean id="mvcEditResources" name="/editresources" parent="resourceBase" class="uk.me.doitto.mypackage.admin.controller.ResourceController">
+		<property name="actionType" value="editResources" />
+	</bean>	
+
+	<bean id="mvcSaveResource" name="/saveresource" parent="resourceBase" class="uk.me.doitto.mypackage.admin.controller.ResourceController">
+		<property name="actionType" value="saveResource" />
+	</bean>	
+
+	<bean id="mvcRemoveResource" name="/removeresource" parent="resourceBase" class="uk.me.doitto.mypackage.admin.controller.ResourceController">
+		<property name="actionType" value="removeResource" />
+	</bean>	
+	
+	<bean id="resourceMessageValidator" class="uk.me.doitto.mypackage.admin.object.ResourceMessageValidator" />
+	
+	<bean id="alterResourceBase" abstract="true" parent="resourceBase">
+		<property name="formView" value="resourceEditView" />
+		<property name="successView" value="redirect:editresources" />
+		<property name="validator" ref="resourceMessageValidator" />
+	</bean>
+	
+	<bean id="mvcAddResource" name="/addresource" parent="alterResourceBase" class="uk.me.doitto.mypackage.admin.controller.AddResourceFormController">
+		<property name="commandClass" value="uk.me.doitto.mypackage.admin.object.ResourceMessage" />
+	</bean>	
+	
+	<bean id="mvcEditResource" name="/editresource" parent="alterResourceBase" class="uk.me.doitto.mypackage.admin.controller.EditResourceFormController" />
+</beans>

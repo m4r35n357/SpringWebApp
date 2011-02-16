@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <joined-subclass name="uk.me.doitto.mypackage.mm.object.Album" extends="uk.me.doitto.mypackage.object.Ownable" table="ALBUM">
+    	<key column="ID" />
+        <property name="label" />
+        <property name="catId" />
+        <property name="date" type="timestamp" column="RELEASE_DATE" />
+        <set name="artists" table="ALBUM_ARTIST">
+            <key column="ALBUMID" />
+            <many-to-many column="ARTISTID" class="uk.me.doitto.mypackage.mm.object.Artist" />
+        </set>
+        <set name="tracks" table="ALBUM_TRACK">
+            <key column="ALBUMID" />
+            <many-to-many column="TRACKID" class="uk.me.doitto.mypackage.mm.object.Track" />
+        </set>
+    </joined-subclass>
+    
+    <joined-subclass name="uk.me.doitto.mypackage.mm.object.Track" extends="uk.me.doitto.mypackage.object.Ownable" table="TRACK">
+    	<key column="ID" />
+        <property name="duration" />
+        <property name="url" />
+        <property name="date" type="timestamp" column="RELEASE_DATE" />
+        <set name="albums" table="ALBUM_TRACK" inverse="true">
+            <key column="TRACKID" />
+            <many-to-many column="ALBUMID" class="uk.me.doitto.mypackage.mm.object.Album" />
+        </set>
+        <set name="performers" table="TRACK_PERFORMER">
+            <key column="TRACKID" />
+            <many-to-many column="PERFORMERID" class="uk.me.doitto.mypackage.mm.object.Artist" />
+        </set>
+    </joined-subclass>
+    
+    <joined-subclass name="uk.me.doitto.mypackage.mm.object.Artist" extends="uk.me.doitto.mypackage.object.Ownable" table="ARTIST">
+    	<key column="ID" />
+        <set name="albums" table="ALBUM_ARTIST" inverse="true">
+            <key column="ARTISTID" />
+            <many-to-many column="ALBUMID" class="uk.me.doitto.mypackage.mm.object.Album" />
+        </set>
+        <set name="performances" table="TRACK_PERFORMER" inverse="true">
+            <key column="PERFORMERID" />
+            <many-to-many column="TRACKID" class="uk.me.doitto.mypackage.mm.object.Track" />
+        </set>
+        <set name="members" table="ARTIST_MEMBER">
+            <key column="ARTISTID" />
+            <many-to-many column="MEMBERID" class="uk.me.doitto.mypackage.mm.object.Artist" />
+        </set>
+        <set name="bands" table="ARTIST_BAND">
+            <key column="ARTISTID" />
+            <many-to-many column="BANDID" class="uk.me.doitto.mypackage.mm.object.Artist" />
+        </set>
+    </joined-subclass>
+</hibernate-mapping>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+    
+    <bean id="mmRemotingBase" abstract="true">
+		<property name="service" ref="musicManagerServiceProxy" />
+		<property name="serviceInterface" value="uk.me.doitto.mypackage.mm.service.MusicManagerWebServiceIf" />
+    </bean>
+    
+	<bean id="remotingHessianMm" name="/MusicManagerWebService-hessian" parent="mmRemotingBase" class="org.springframework.remoting.caucho.HessianServiceExporter" />
+			
+	<bean id="remotingBurlapMm" name="/MusicManagerWebService-burlap" parent="mmRemotingBase" class="org.springframework.remoting.caucho.BurlapServiceExporter" />
+			
+	<bean id="remotingHttpInvokerMm" name="/MusicManagerWebService-http-invoker" parent="mmRemotingBase" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter" />
+			
+</beans>
+

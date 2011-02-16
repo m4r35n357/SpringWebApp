@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- Pure JSP (no controller) action mappings -->
+	<bean name="/rssDisplay" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />	
+
+	<!-- RSS controllers -->
+	<bean id="rssBase" abstract="true">
+		<property name="rssService" ref="rssServiceProxy" />
+	</bean>
+	
+	<bean id="mvcDisplayFeeds" name="/displayfeeds" parent="rssBase" class="uk.me.doitto.mypackage.rss.controller.RSSController">
+		<property name="actionType" value="displayFeeds" />
+	</bean>
+	
+	<bean id="mvcEditFeeds" name="/editfeeds" parent="rssBase" class="uk.me.doitto.mypackage.rss.controller.RSSController">
+		<property name="actionType" value="editFeeds" />
+	</bean>	
+	
+	<bean id="mvcAddFeed" name="/addfeed" parent="rssBase" class="uk.me.doitto.mypackage.rss.controller.RSSController">
+		<property name="actionType" value="addFeed" />
+	</bean>	
+	
+	<bean id="mvcRemoveFeed" name="/removefeed" parent="rssBase" class="uk.me.doitto.mypackage.rss.controller.RSSController">
+		<property name="actionType" value="removeFeed" />
+	</bean>	
+	
+	<bean id="mvcAddAggregate" name="/addaggregate" parent="rssBase" class="uk.me.doitto.mypackage.rss.controller.RSSController">
+		<property name="actionType" value="addAggregate" />
+	</bean>	
+	
+	<bean id="mvcRemoveAggregate" name="/removeaggregate" parent="rssBase" class="uk.me.doitto.mypackage.rss.controller.RSSController">
+		<property name="actionType" value="removeAggregate" />
+	</bean>	
+	
+	<bean id="mvcPublishFeed" name="/publishfeed" parent="rssBase" class="uk.me.doitto.mypackage.rss.controller.RSSController">
+		<property name="actionType" value="publishFeed" />
+	</bean>	
+</beans>

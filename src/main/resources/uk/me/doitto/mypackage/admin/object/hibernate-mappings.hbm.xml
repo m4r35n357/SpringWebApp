@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <joined-subclass name="uk.me.doitto.mypackage.admin.object.Owner" extends="uk.me.doitto.mypackage.object.PersistentClass" table="OWNER">
+    	<key column="ID" />
+        <property name="password" />
+        <property name="role" />
+        <property name="notes" />
+        <property name="accountFlags" />
+        <property name="moduleFlags" />
+    </joined-subclass>
+    
+    <joined-subclass name="uk.me.doitto.mypackage.admin.object.ResourceMessage" extends="uk.me.doitto.mypackage.object.PersistentClass" table="RESOURCEMESSAGE">
+    	<key column="ID" />
+        <property name="value" />
+        <property name="language" />
+        <property name="countryCode" />
+    </joined-subclass>   
+</hibernate-mapping>

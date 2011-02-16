@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- Resources -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="resource/messages" />
+	</bean>
+	
+	<!-- Properties -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" dependency-check="none">
+		<property name="location" value="/WEB-INF/spring/application.properties" />
+	</bean>
+
+	<!-- HIBERNATE persistence, referenced by genericHibernateDao, txProxyTemplate, and integration tests -->
+	<bean id="hibernateSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+				<property name="driverClassName" value="${database.driverClassName}" />
+				<property name="url" value="${database.url}" />
+				<property name="username" value="${database.username}" />
+				<property name="password" value="${database.password}" />
+			</bean>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>uk/me/doitto/mypackage/object/hibernate-mappings.hbm.xml</value>
+				<value>uk/me/doitto/mypackage/admin/object/hibernate-mappings.hbm.xml</value>
+				<value>uk/me/doitto/mypackage/rss/object/hibernate-mappings.hbm.xml</value>
+				<value>uk/me/doitto/mypackage/mm/object/hibernate-mappings.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.generate_statistics">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddlauto}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="genericHibernateDao" abstract="true" class="uk.me.doitto.mypackage.dao.GenericHibernateDAO">
+		<property name="hibernateTemplate">
+			<bean class="org.springframework.orm.hibernate3.HibernateTemplate">
+				<property name="sessionFactory" ref="hibernateSessionFactory" />
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- General application beans -->
+	<bean id="testWebService" class="uk.me.doitto.mypackage.service.WebServiceTest" />
+	
+	<!-- Aspect Configuration -->
+	<bean id="emailNotifier" class="uk.me.doitto.mypackage.aspect.EmailNotificationThrowsAdvice">
+		<property name="mailSender">
+			<bean class="org.springframework.mail.javamail.JavaMailSenderImpl">
+				<property name="host" value="${mail.relay}" />
+			</bean>
+		</property>
+		<property name="messageTemplate">
+			<bean class="org.springframework.mail.SimpleMailMessage">
+				<property name="subject" value="Exception thrown from SpringApp" />
+				<property name="to" value="${exception.maildestination}" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="emailAlertProxy" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames" value="mvc*,remoting*" />
+		<property name="interceptorNames">
+			<list>
+				<idref local="emailNotifier" />
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Transaction Configuration -->	
+  	<bean id="txInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager">
+			<bean class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+				<property name="sessionFactory" ref="hibernateSessionFactory" />
+			</bean>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="proxyBase" abstract="true" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyTargetClass" value="true" />
+		<property name="interceptorNames">
+			<list>
+<!--				<idref bean="methodSecurityInterceptor" />-->
+				<idref local="txInterceptor" />
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Initialization -->
+	<bean id="init" class="uk.me.doitto.mypackage.service.Init" />
+	
+</beans>

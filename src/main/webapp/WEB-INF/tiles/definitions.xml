@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+	<!-- blankLayout -->
+	<definition name="blankLayout" template="/WEB-INF/view/template.jsp">
+		<put-attribute type="string" name="header" value="" />
+		<put-attribute type="string" name="menu" value="" />
+		<put-attribute type="string" name="footer" value="" />
+	</definition>
+	
+	<definition name="login" extends="blankLayout">
+		<put-attribute type="string" name="title" value="Log In" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/login.jsp" />
+	</definition>
+	
+	<definition name="notfound" extends="blankLayout">
+		<put-attribute type="string" name="title" value="Page Not Found" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/http404.jsp" />
+	</definition>
+	
+	<definition name="error" extends="blankLayout">
+		<put-attribute type="string" name="title" value="Error !!!" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/error.jsp" />
+	</definition>
+	
+	<!-- baseLayout -->
+	<definition name="baseLayout" template="/WEB-INF/view/template.jsp">
+		<put-attribute type="template" name="header" value="/WEB-INF/view/header.jsp" />
+		<put-attribute type="template" name="menu" value="/WEB-INF/view/menu.jsp" />
+		<put-attribute type="template" name="footer" value="/WEB-INF/view/footer.jsp" />
+	</definition>
+	
+	<definition name="accessDenied" extends="baseLayout">
+		<put-attribute type="string" name="title" value="Access Denied" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/accessDenied.jsp" />
+	</definition>
+	
+	<definition name="welcome" extends="baseLayout">
+		<put-attribute type="string" name="title" value="Welcome" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/welcome.jsp" />
+	</definition>
+	
+	<definition name="ajaxTest" extends="baseLayout">
+		<put-attribute type="string" name="title" value="Ajax Test" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/ajaxTest.jsp" />
+	</definition>
+	
+	<definition name="jspvars" extends="baseLayout">
+		<put-attribute type="string" name="title" value="JSP Environment" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/jspvars.jsp" />
+	</definition>
+	
+	<!-- Non-MVC/External URLS in IFRAME/OBJECT -->
+	<definition name="urlDisplay" extends="baseLayout">
+		<put-attribute type="template" name="content" value="/WEB-INF/view/embedUrl.jsp" />
+	</definition>
+	
+	<definition name="ajaxDisplay" extends="urlDisplay">
+		<put-attribute type="string" name="title" value="AJAX Debug" />
+	</definition>
+	
+	<definition name="wsdlDisplay" extends="urlDisplay">
+		<put-attribute type="string" name="title" value="WSDL Display" />
+	</definition>
+	
+	<definition name="apiDisplay" extends="urlDisplay">
+		<put-attribute type="string" name="title" value="JavaDoc Display" />
+	</definition>
+	
+	<definition name="licenceDisplay" extends="urlDisplay">
+		<put-attribute type="string" name="title" value="Licence Display" />
+	</definition>
+</tiles-definitions>

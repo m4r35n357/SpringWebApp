@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+	<definition name="listFeedsView" extends="baseLayout">
+		<put-attribute type="string" name="title" value="Display Feeds (Top 10)" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/rss/rssFeeds.jsp" />
+	</definition>
+	
+	<definition name="editFeedsView" extends="baseLayout">
+		<put-attribute type="string" name="title" value="RSS Aggregator" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/rss/rssAdmin.jsp" />
+	</definition>
+	
+	<definition name="rssDisplay" extends="baseLayout">
+		<put-attribute type="string" name="title" value="Feed Viewer" />
+		<put-attribute type="template" name="content" value="/WEB-INF/view/embedUrl.jsp" />
+	</definition>
+	
+	<definition name="renderFeedView" template="/WEB-INF/view/rss/rssSyndication.jsp" />
+</tiles-definitions>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- Used by MVC and Remoting -->
+	<bean id="ownerServiceProxy" parent="proxyBase">
+		<property name="target">
+			<bean class="uk.me.doitto.mypackage.admin.service.OwnerService">
+				<property name="ownerDAO">
+					<bean parent="genericHibernateDao">
+						<constructor-arg value="uk.me.doitto.mypackage.admin.object.Owner" />
+					</bean>
+				</property>
+				<property name="passwordEncoder" ref="md5PasswordEncoder" />
+			</bean>
+		</property>
+	</bean>
+		
+	<bean id="resourceServiceProxy" parent="proxyBase">
+		<property name="target">
+			<bean class="uk.me.doitto.mypackage.admin.service.ResourceService">
+				<property name="messageDao">
+					<bean parent="genericHibernateDao">
+						<constructor-arg value="uk.me.doitto.mypackage.admin.object.ResourceMessage" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+</beans>

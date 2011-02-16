@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="mmBase" abstract="true">
+		<property name="manager" ref="musicManagerServiceProxy" />
+	</bean>
+	
+	<!-- ALBUM -->
+	<bean id="mvclistalbums" name="/listalbums" parent="mmBase" scope="prototype" class="uk.me.doitto.mypackage.mm.controller.ListItemsController">
+		<property name="itemClass" value="uk.me.doitto.mypackage.mm.object.Album" />
+	</bean>
+
+	<bean id="mvcunlinkalbum" name="/unlinkalbum" parent="mmBase" scope="prototype" class="uk.me.doitto.mypackage.mm.controller.UnlinkItemController" />
+
+	<bean id="mvcdeletealbum" name="/deletealbum" parent="mmBase" scope="prototype" class="uk.me.doitto.mypackage.mm.controller.DeleteItemController">
+		<property name="itemClass" value="uk.me.doitto.mypackage.mm.object.Album" />
+	</bean>
+
+	<bean id="albumValidator" class="uk.me.doitto.mypackage.mm.object.AlbumValidator" />
+	
+	<bean id="alterAlbumBase" abstract="true" parent="mmBase">
+		<property name="formView" value="albumView" />
+		<property name="successView" value="redirect:listalbums" />
+		<property name="validator" ref="albumValidator" />
+	</bean>
+	
+	<bean id="mvcaddalbum" name="/addalbum" parent="alterAlbumBase" class="uk.me.doitto.mypackage.mm.controller.AddItemFormController">
+		<property name="commandClass" value="uk.me.doitto.mypackage.mm.object.Album" />
+	</bean>
+	
+	<bean id="mvceditalbum" name="/editalbum" parent="alterAlbumBase" class="uk.me.doitto.mypackage.mm.controller.EditItemFormController">
+		<property name="itemClass" value="uk.me.doitto.mypackage.mm.object.Album" />
+	</bean>
+
+	<!-- TRACK -->
+	<bean id="mvclisttracks" name="/listtracks" parent="mmBase" scope="prototype" class="uk.me.doitto.mypackage.mm.controller.ListItemsController">
+		<property name="itemClass" value="uk.me.doitto.mypackage.mm.object.Track" />
+	</bean>
+
+	<bean id="mvcunlinktrack" name="/unlinktrack" parent="mmBase" scope="prototype" class="uk.me.doitto.mypackage.mm.controller.UnlinkItemController" />
+
+	<bean id="mvcdeletetrack" name="/deletetrack" parent="mmBase" scope="prototype" class="uk.me.doitto.mypackage.mm.controller.DeleteItemController">
+		<property name="itemClass" value="uk.me.doitto.mypackage.mm.object.Track" />
+	</bean>
+
+	<bean id="trackValidator" class="uk.me.doitto.mypackage.mm.object.TrackValidator" />
+	
+	<bean id="alterTrackBase" abstract="true" parent="mmBase" >
+		<property name="formView" value="trackView" />
+		<property name="successView" value="redirect:listtracks" />
+		<property name="validator" ref="trackValidator" />
+	</bean>
+	
+	<bean id="mvcaddtrack" name="/addtrack" parent="alterTrackBase" class="uk.me.doitto.mypackage.mm.controller.AddItemFormController">
+		<property name="commandClass" value="uk.me.doitto.mypackage.mm.object.Track" />
+	</bean>
+	
+	<bean id="mvcedittrack" name="/edittrack" parent="alterTrackBase" class="uk.me.doitto.mypackage.mm.controller.EditItemFormController">
+		<property name="itemClass" value="uk.me.doitto.mypackage.mm.object.Track" />
+	</bean>
+
+	<bean name="/playMedia" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+	
+	<!-- ARTIST -->
+	<bean id="mvclistartists" name="/listartists" parent="mmBase" scope="prototype" class="uk.me.doitto.mypackage.mm.controller.ListItemsController">
+		<property name="itemClass" value="uk.me.doitto.mypackage.mm.object.Artist" />
+	</bean>
+
+	<bean id="mvcunlinkartist" name="/unlinkartist" parent="mmBase" scope="prototype" class="uk.me.doitto.mypackage.mm.controller.UnlinkItemController" />
+
+	<bean id="mvcdeleteartist" name="/deleteartist" parent="mmBase" scope="prototype" class="uk.me.doitto.mypackage.mm.controller.DeleteItemController">
+		<property name="itemClass" value="uk.me.doitto.mypackage.mm.object.Artist" />
+	</bean>
+
+	<bean id="artistValidator" class="uk.me.doitto.mypackage.mm.object.ArtistValidator" />
+	
+	<bean id="alterArtistBase" abstract="true" parent="mmBase">
+		<property name="formView" value="artistView" />
+		<property name="successView" value="redirect:listartists" />
+		<property name="validator" ref="artistValidator" />
+	</bean>
+	
+	<bean id="mvcaddartist" name="/addartist" parent="alterArtistBase" class="uk.me.doitto.mypackage.mm.controller.AddItemFormController">
+		<property name="commandClass" value="uk.me.doitto.mypackage.mm.object.Artist" />
+	</bean>
+	
+	<bean id="mvceditartist" name="/editartist" parent="alterArtistBase" class="uk.me.doitto.mypackage.mm.controller.EditItemFormController">
+		<property name="itemClass" value="uk.me.doitto.mypackage.mm.object.Artist" />
+	</bean>
+</beans>
